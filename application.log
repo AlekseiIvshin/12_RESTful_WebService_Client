@@ -370,3 +370,9 @@ org.codehaus.jackson.map.JsonMappingException: Can not deserialize instance of j
 16:39:39.345 [main] DEBUG client.RestCientImpl - Recieved {"data":{"id":1,"name":"Name 100","surname":"SurName 100","patronymic":"Patronic 100","passportNumber":"100100","passportSeries":"9100","birthDate":"2014-09-11"},"exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
 16:39:39.389 [main] DEBUG client.RestCientImpl - Mapped data: {"id":0,"name":"Name","surname":"surname","patronymic":null,"passportNumber":"123122","passportSeries":"1611","birthDate":1413290379353}
 16:39:39.994 [main] DEBUG client.RestCientImpl - Recieved {"data":"108","exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
+16:44:45.247 [main] DEBUG client.RestCientImpl - Recieved {"data":{"id":1,"name":"Name 100","surname":"SurName 100","patronymic":"Patronic 100","passportNumber":"100100","passportSeries":"9100","birthDate":"2014-09-11"},"exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
+16:44:45.485 [main] DEBUG client.RestCientImpl - Recieved {"data":null,"exception":{"status":1,"exceptionClass":"SqlException","exceptionMessage":"Not founded"}}
+16:44:45.490 [main] ERROR client.RestCientImpl - SqlException: Not founded
+16:44:45.767 [main] DEBUG client.RestCientImpl - Recieved {"data":{"id":1,"name":"Name 100","surname":"SurName 100","patronymic":"Patronic 100","passportNumber":"100100","passportSeries":"9100","birthDate":"2014-09-11"},"exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
+16:44:45.809 [main] DEBUG client.RestCientImpl - Mapped data: {"id":0,"name":"Name","surname":"surname","patronymic":null,"passportNumber":"185130","passportSeries":"1210","birthDate":1413290685775}
+16:44:46.084 [main] DEBUG client.RestCientImpl - Recieved {"data":"109","exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}

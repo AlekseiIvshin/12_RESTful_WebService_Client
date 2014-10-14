@@ -18,6 +18,14 @@ public class RestCientImplTest {
 	public void setUp(){
 		client = new RestCientImpl("http://localhost:8088");
 	}
+	
+	@Test
+	public void testGetCustomerById(){
+
+		Customer customer = client.getCustomerById(1);
+		assertNotNull(customer);
+		assertEquals(customer.getId(), 1);
+	}
 
 	@Test
 	public void testGetCustomerByPassport() {
