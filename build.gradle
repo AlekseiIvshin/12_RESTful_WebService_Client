@@ -12,5 +12,8 @@ repositories {
 
 dependencies{
 	compile 'ch.qos.logback:logback-classic:1.1.2'
+	compile 'javax:javaee-api:7.0'
+	compile 'org.glassfish.jersey.core:jersey-client:2.13'
+	compile 'org.codehaus.jackson:jackson-jaxrs:1.9.13'
 	testCompile 'junit:junit:4.11+'
 }
