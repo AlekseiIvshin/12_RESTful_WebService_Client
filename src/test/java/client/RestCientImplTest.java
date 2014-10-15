@@ -12,11 +12,11 @@ import domain.Customer;
 
 public class RestCientImplTest {
 
-	RestCientImpl client;
+	RestCustomerImpl client;
 	
 	@Before
 	public void setUp(){
-		client = new RestCientImpl("http://localhost:8088");
+		client = new RestCustomerImpl("http://localhost:8088");
 	}
 	
 	@Test

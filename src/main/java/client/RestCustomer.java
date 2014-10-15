@@ -8,7 +8,7 @@ import domain.Customer;
  * @author Aleksei_Ivshin
  *
  */
-public interface RestClient {
+public interface RestCustomer {
 
 	/**
 	 * Get customer by id.
