@@ -376,3 +376,8 @@ org.codehaus.jackson.map.JsonMappingException: Can not deserialize instance of j
 16:44:45.767 [main] DEBUG client.RestCientImpl - Recieved {"data":{"id":1,"name":"Name 100","surname":"SurName 100","patronymic":"Patronic 100","passportNumber":"100100","passportSeries":"9100","birthDate":"2014-09-11"},"exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
 16:44:45.809 [main] DEBUG client.RestCientImpl - Mapped data: {"id":0,"name":"Name","surname":"surname","patronymic":null,"passportNumber":"185130","passportSeries":"1210","birthDate":1413290685775}
 16:44:46.084 [main] DEBUG client.RestCientImpl - Recieved {"data":"109","exception":{"status":-1,"exceptionClass":null,"exceptionMessage":null}}
+11:05:14.515 [main] DEBUG client.RestCarServiceImpl - Mapped data: {"id":0,"mark":"Mark148976523100","model":"Model-987659594100","modification":"Modif1412397673100"}
+11:05:15.430 [main] ERROR client.RestCarServiceImpl - java.sql.SQLException: Not found mark with name Mark148976523100
+11:06:38.764 [main] DEBUG client.RestCarServiceImpl - Mapped data: {"id":0,"mark":"Mark42100","model":"Model18100","modification":"Modif15100"}
+11:06:42.546 [main] ERROR client.RestCarServiceImpl - java.sql.SQLException: Not found mark with name Mark42100
+11:14:21.461 [main] DEBUG client.RestCarServiceImpl - Mapped data: {"id":0,"mark":"Mark20100","model":"Model26100","modification":"Modif27100"}

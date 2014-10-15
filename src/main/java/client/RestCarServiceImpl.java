@@ -40,23 +40,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<Car> data;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				data = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<Car>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
+		JsonData<Car> data = parseResponse(response, new TypeReference<JsonData<Car>>() {});
 
 		if (data == null) {
 			logger.debug("Recieved data is null");
@@ -80,23 +64,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<Car> data;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				data = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<Car>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
+		JsonData<Car> data = parseResponse(response, new TypeReference<JsonData<Car>>() {});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
@@ -117,23 +85,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				data = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<List<Car>>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
+		JsonData<List<Car>> data = parseResponse(response, new TypeReference<JsonData<List<Car>>>() {});
 
 		if (data == null) {
 			logger.debug("Recieved data is null");
@@ -156,23 +108,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				data = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<List<Car>>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
+		JsonData<List<Car>> data = parseResponse(response, new TypeReference<JsonData<List<Car>>>() {});
 
 		if (data == null) {
 			logger.debug("Recieved data is null");
@@ -195,24 +131,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				data = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<List<Car>>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
-
+		JsonData<List<Car>> data = parseResponse(response, new TypeReference<JsonData<List<Car>>>() {});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
@@ -243,23 +162,7 @@ public class RestCarServiceImpl implements RestCarService {
 		Response response = builder.post(Entity.entity(jsonCustomer,
 				MediaType.APPLICATION_JSON));
 
-		JsonData<Integer> resultData;
-
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				resultData = jsonMapper.readValue(entity,
-						new TypeReference<JsonData<Car>>() {
-						});
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return -1;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
+		JsonData<Integer> resultData = parseResponse(response, new TypeReference<JsonData<Integer>>() {});
 
 		if (resultData == null) {
 			logger.debug("Recieved data is null");
@@ -276,12 +179,12 @@ public class RestCarServiceImpl implements RestCarService {
 		return resultData.getData();
 	}
 
-	private <T> T parseResponse(Response response, Class<T> readClass) {
+	private <T> T parseResponse(Response response, TypeReference<?> type) {
 		if (response.getStatus() == 200) {
 
 			try {
 				String entity = response.readEntity(String.class);
-				return jsonMapper.readValue(entity, readClass);
+				return jsonMapper.readValue(entity,type);
 			} catch (IOException e) {
 				logger.error("Parse response entity error", e);
 				return null;
