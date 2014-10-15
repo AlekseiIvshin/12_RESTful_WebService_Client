@@ -2,35 +2,21 @@ package client;
 
 import java.io.IOException;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.ws.http.HTTPException;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.codehaus.jackson.type.TypeReference;
 
 import domain.Customer;
-import domain.JsonCustomer;
-import domain.JsonIntegerData;
+import domain.JsonData;
 
-public class RestCustomerImpl implements RestCustomer {
-
-	static final Logger logger = LoggerFactory
-			.getLogger(RestCustomerImpl.class);
-
-	private final String host;
-	private final Client client;
-	private final ObjectMapper jsonMapper = new ObjectMapper();
+public class RestCustomerImpl extends RestClient implements RestCustomer {
 
 	public RestCustomerImpl(String host) {
-		this.host = host;
-		client = ClientBuilder.newClient();
+		super(host);
 	}
 
 	@Override
@@ -41,7 +27,9 @@ public class RestCustomerImpl implements RestCustomer {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonCustomer data = parseResponse(response,JsonCustomer.class);
+		JsonData<Customer> data = parseResponse(response,
+				new TypeReference<JsonData<Customer>>() {
+				});
 
 		if (data == null) {
 			logger.debug("Recieved data is null");
@@ -64,8 +52,9 @@ public class RestCustomerImpl implements RestCustomer {
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
 
-		JsonCustomer data = parseResponse(response,JsonCustomer.class);
-
+		JsonData<Customer> data = parseResponse(response,
+				new TypeReference<JsonData<Customer>>() {
+				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
@@ -95,9 +84,10 @@ public class RestCustomerImpl implements RestCustomer {
 		logger.debug("Mapped data: {}", jsonCustomer);
 		Response response = builder.post(Entity.entity(jsonCustomer,
 				MediaType.APPLICATION_JSON));
-		
-		JsonIntegerData data = parseResponse(response, JsonIntegerData.class);
 
+		JsonData<Integer> data = parseResponse(response,
+				new TypeReference<JsonData<Integer>>() {
+				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return -1;
@@ -110,22 +100,6 @@ public class RestCustomerImpl implements RestCustomer {
 		}
 
 		return data.getData();
-	}
-
-	private <T> T parseResponse(Response response, Class<T> readClass) {
-		if (response.getStatus() == 200) {
-
-			try {
-				String entity = response.readEntity(String.class);
-				return jsonMapper.readValue(entity, readClass);
-			} catch (IOException e) {
-				logger.error("Parse response entity error", e);
-				return null;
-			}
-		} else {
-			logger.error("Response status: {}", response.getStatus());
-			throw new HTTPException(response.getStatus());
-		}
 	}
 
 }
