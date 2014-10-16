@@ -1,7 +1,5 @@
 package client;
 
-import java.io.IOException;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -27,7 +25,7 @@ public class RestCustomerImpl extends RestClient implements RestCustomer {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<Customer> data = parseResponse(response,
+		JsonData<Customer> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Customer>>() {
 				});
 
@@ -35,7 +33,7 @@ public class RestCustomerImpl extends RestClient implements RestCustomer {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -52,14 +50,14 @@ public class RestCustomerImpl extends RestClient implements RestCustomer {
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
 
-		JsonData<Customer> data = parseResponse(response,
+		JsonData<Customer> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Customer>>() {
 				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -74,25 +72,22 @@ public class RestCustomerImpl extends RestClient implements RestCustomer {
 		WebTarget target = client.target(host + "/customer/new");
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
-		String jsonCustomer = "";
-		try {
-			jsonCustomer = jsonMapper.writeValueAsString(customer);
-		} catch (IOException e1) {
-			logger.error("Mapping exception", e1);
+		String jsonCustomer = dataPacker.packToJsonString(customer);
+		if (jsonCustomer == null || jsonCustomer.isEmpty()) {
 			return -1;
 		}
 		logger.debug("Mapped data: {}", jsonCustomer);
 		Response response = builder.post(Entity.entity(jsonCustomer,
 				MediaType.APPLICATION_JSON));
 
-		JsonData<Integer> data = parseResponse(response,
+		JsonData<Integer> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Integer>>() {
 				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return -1;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return -1;

@@ -23,4 +23,8 @@ public class JsonExceptionData {
 	public void setExceptionMessage(String exceptionMessage) {
 		this.exceptionMessage = exceptionMessage;
 	}
+	
+	public boolean haveError(){
+		return status > 0;
+	}
 }

@@ -1,6 +1,5 @@
 package client;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.client.Entity;
@@ -8,7 +7,9 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.codehaus.jackson.type.TypeReference;
+
 import domain.Car;
 import domain.JsonData;
 
@@ -25,7 +26,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<Car> data = parseResponse(response,
+		JsonData<Car> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Car>>() {
 				});
 
@@ -33,7 +34,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -51,14 +52,14 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<Car> data = parseResponse(response,
+		JsonData<Car> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Car>>() {
 				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -74,7 +75,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data = parseResponse(response,
+		JsonData<List<Car>> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<List<Car>>>() {
 				});
 
@@ -82,7 +83,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -99,7 +100,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data = parseResponse(response,
+		JsonData<List<Car>> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<List<Car>>>() {
 				});
 
@@ -107,7 +108,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -124,14 +125,14 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
 		Response response = builder.get();
-		JsonData<List<Car>> data = parseResponse(response,
+		JsonData<List<Car>> data = responseParser.parseResponse(response,
 				new TypeReference<JsonData<List<Car>>>() {
 				});
 		if (data == null) {
 			logger.debug("Recieved data is null");
 			return null;
 		} else {
-			if (data.getException().getStatus() > 0) {
+			if (data.getException().haveError()) {
 				logger.error("{}: {}", data.getException().getExceptionClass(),
 						data.getException().getExceptionMessage());
 				return null;
@@ -146,18 +147,15 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 		WebTarget target = client.target(host + "/car/new");
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);
-		String jsonCustomer = "";
-		try {
-			jsonCustomer = jsonMapper.writeValueAsString(data);
-		} catch (IOException e1) {
-			logger.error("Mapping exception", e1);
+		String jsonCar = dataPacker.packToJsonString(data);
+		if (jsonCar == null) {
 			return -1;
 		}
-		logger.debug("Mapped data: {}", jsonCustomer);
-		Response response = builder.post(Entity.entity(jsonCustomer,
+		logger.debug("Mapped data: {}", jsonCar);
+		Response response = builder.post(Entity.entity(jsonCar,
 				MediaType.APPLICATION_JSON));
 
-		JsonData<Integer> resultData = parseResponse(response,
+		JsonData<Integer> resultData = responseParser.parseResponse(response,
 				new TypeReference<JsonData<Integer>>() {
 				});
 
@@ -165,7 +163,7 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 			logger.debug("Recieved data is null");
 			return -1;
 		} else {
-			if (resultData.getException().getStatus() > 0) {
+			if (resultData.getException().haveError()) {
 				logger.error("{}: {}", resultData.getException()
 						.getExceptionClass(), resultData.getException()
 						.getExceptionMessage());
