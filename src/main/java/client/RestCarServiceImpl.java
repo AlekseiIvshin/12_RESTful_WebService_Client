@@ -21,7 +21,6 @@ public class RestCarServiceImpl extends RestClient implements RestCarService {
 
 	@Override
 	public Car getCarById(long id) {
-
 		WebTarget target = client.target(host + "/car/id/" + id);
 		Invocation.Builder builder = target
 				.request(MediaType.APPLICATION_JSON_TYPE);

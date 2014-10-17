@@ -20,6 +20,7 @@ public class MainClientTest {
 	public void testAddCustomerInfoReportByPassport() {
 		client.addCustomerInfoReportByPassport("9100", "100100");
 		client.addCarsReport();
+		client.addSalesCarReports();
 		try {
 			client.createAddedReports();
 		} catch (ReportException e) {
